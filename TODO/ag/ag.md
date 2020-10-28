@@ -830,6 +830,7 @@ nohup run.sh import /hdfs/data1/ag_enhanced_data/conf/janus023_5_times_base.prop
 # 修改hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
 192.168.80.73   gpm
 192.168.82.38   web
 192.168.80.45    namenode
