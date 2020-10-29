@@ -1,6 +1,6 @@
 ## Java 中应该使用什么数据类型来表示价格
 
-不关心内存和性能 BigDecimal,否则double即可
+不关心内存和性能 BigDecimal,否则double即可
 
 ## 怎么将byte转换为String
 
