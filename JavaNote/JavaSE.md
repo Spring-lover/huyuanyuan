@@ -413,3 +413,9 @@ Math.abs(Integer.MIN_VALUE) // -2147483648
 Math.abs((long) Integer.MIN_VALUE) // 2147483648
 ```
 
+## add(new ArrayList<>(path))
+
+
+`res.add(new ArrayList(path))`：开辟一个独立地址，地址中存放的内容为item链表，后续item的变化不会影响到res
+
+`res.add(path)`：将res尾部指向了item地址，后续item内容的变化会导致res的变化。

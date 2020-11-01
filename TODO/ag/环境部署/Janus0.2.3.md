@@ -36,8 +36,8 @@ mvn -v
 ```shell
 tar -zxvf node-10.6.0-linux-x64.tar.gz
 
-ln -s /opt/node-10.6.0-linux-x64/bin/npm /usr/local/bin/
-ln -s /opt/node-10.6.0-linux-x64/bin/node /usr/local/bin/ 
+ln -s /opt/node-8.11.3-linux-x64/bin/npm /usr/local/bin/
+ln -s /opt/node-8.11.3-linux-x64/bin/node /usr/local/bin/ 
 
 node -v
 
@@ -77,6 +77,8 @@ nohup npm run dev >/dev/null 2>&1 & exit # 让npm在后台中运行
 
 nohup run.sh import /hdfs/data1/ag_enhanced_data/conf/janus023_5_times_base.properties /hdfs/data1/ag_enhanced_data/5times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201027_5time_base
 
+nohup run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties
+
 # 查看进程
 
 ps -ef | grep -v grep | grep BatchImport
@@ -95,3 +97,4 @@ truncate tablename
 scp ./* root@10.106.128.29:/hdfs/data1/ag_enhanced_data
 
 ```
+/opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties
