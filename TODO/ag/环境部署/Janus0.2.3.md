@@ -77,7 +77,7 @@ nohup npm run dev >/dev/null 2>&1 & exit # 让npm在后台中运行
 
 nohup run.sh import /hdfs/data1/ag_enhanced_data/conf/janus023_5_times_base.properties /hdfs/data1/ag_enhanced_data/5times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201027_5time_base
 
-nohup run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties
+nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /hdfs/data2/ag_1_times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201101_cassandra &
 
 # 查看进程
 
@@ -97,4 +97,3 @@ truncate tablename
 scp ./* root@10.106.128.29:/hdfs/data1/ag_enhanced_data
 
 ```
-/opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties
