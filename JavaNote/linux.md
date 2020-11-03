@@ -459,3 +459,11 @@ unwatch # 取消watch命令对多个key的监控，所有监控锁将会被取�
 
 
 
+## linux 命令
+
+```shell
+打包成tar.gz 格式压缩包
+tar -zcvf ag.tar /opt/ag_tar/
+解压tar.gz格式压缩包
+tar zxvf ag.tar
+```
