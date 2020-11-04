@@ -419,3 +419,44 @@ Math.abs((long) Integer.MIN_VALUE) // 2147483648
 `res.add(new ArrayList(path))`：开辟一个独立地址，地址中存放的内容为item链表，后续item的变化不会影响到res
 
 `res.add(path)`：将res尾部指向了item地址，后续item内容的变化会导致res的变化。
+
+## toArray()和toArray(T[] a) 方法
+
+这两个方法都是将列表的List的元素导出为数组,不同的是toArray()导出的是Object类型的，而toArray[T[] a]导出的是指定类型的数组
+
+```java
+    // toArray()
+    List<People> list = new ArrayList<>();
+    list.add(new People("小明"));
+    list.add(new People("小王"));
+    Object[] objects1 = list.toArray();
+    Object[] objects2 = list.toArray();
+    System.out.println("objects1 == objects2 : "+(objects1 == objects2));
+    ((People)objects1[1]).name = "小花";
+    System.out.println("show objects1: "+ Arrays.toString(objects1));
+    System.out.println("show objects2: "+ Arrays.toString(objects2));
+    System.out.println("show list: "+list);
+    
+    objects1 == objects2 : false
+    show objects1: [People{name='小明'}, People{name='小花'}]
+    show objects2: [People{name='小明'}, People{name='小花'}]
+    show list: [People{name='小明'}, People{name='小花'}]
+```
+list.toArray()返回的数组中存放的是list原始对象的引用，只是创建一个新的数组来存放，并没有对list中原始对象进行拷贝或复制
+
+```java
+// toArray(T[] a)
+@SuppressWarnings("unchecked")
+public <T> T[] toArray(T[] a) {
+    if (a.length < size)
+        // Make a new array of a's runtime type, but my contents:
+        return (T[]) Arrays.copyOf(elementData, size, a.getClass());
+    System.arraycopy(elementData, 0, a, 0, size);
+    if (a.length > size)
+        a[size] = null;
+    return a;
+}
+```
+参数长度小于则直接复制并转换为T类型，大于等于则在数组末尾补null
+
+
