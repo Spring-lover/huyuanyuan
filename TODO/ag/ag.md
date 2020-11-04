@@ -856,6 +856,7 @@ invoiceFlow_nsr.csv, 293s, 4/5
 
 ## Nginx
 
+###  基本概念
 1. 反向代理
   正向代理：在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问
   反向代理：我们只需要将请求发送给反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，再返回给客户端，此时反向服务器和目标服务器对外就是一个服务器，暴露的是代理服务器地址，隐藏了真实服务器IP地址
@@ -863,3 +864,106 @@ invoiceFlow_nsr.csv, 293s, 4/5
   单个服务器上解决不了高并发的情况，通过增加服务器的数量，然后将请求分发到各个服务器上，将原先请求集中到单个服务器上的情况改为将请求分发到多个服务器上，将负载分发到不同的服务器
 3. 动静分离
   为了加快网站的解析速度，可以把动态页面和静态页面由不同的服务器来解析，加快解析速度，降低原来单个服务器的压力
+
+### Nginx的分配方式
+
+1. 轮询方法（默认）
+    每个请求按照时间顺序逐一分配到不同的后端服务器上，如果后端服务器down掉，可以自动剔除
+
+2. weight
+    指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况
+    ```shell
+    upstream server_pool{
+      server 192.168.5.31 weight=10;
+      server 192.168.5.22 weight=20;
+    }
+    ```
+3. ip_hash
+    每个请求按访问ip的hash结果分配，这样每个访客固定底访问一个后端服务器，可以解决session的问题
+    ```shell
+    upstream server_pool{
+      ip_hash;
+      server 192.168.5.21:80;
+      server 192.168.5.22:80;
+    }
+    ```
+4. fair
+    按后端服务器的响应时间来分配请求，响应时间短的优先分配
+    ```shell
+    upstream server_pool{
+      server 192.168.5.21:80;
+      server 192.168.5.22:80;
+      fair;
+    }
+    ```
+### ag中的nginx.conf
+
+```shell
+
+cd /usr/local/nginx
+mkdir key
+cd key
+
+openssl genrsa -des3 -out ssl.key 4096
+### 输入密码1111
+Enter pass phrase for ssl.key:1111
+Verifying - Enter pass phrase for ssl.key:1111
+
+mv ssl.key xxx.key
+openssl rsa -in xxx.key -out ssl.key
+# 输入密码1111
+rm -f xxx.key
+
+openssl req -new -key ssl.key -out ssl.csr
+############
+Country Name (2 letter code) [XX]:CN
+State or Province Name (full name) []:beijing
+Locality Name (eg, city) [Default City]:haidian
+Organization Name (eg, company) [Default Company Ltd]:aisino
+Organizational Unit Name (eg, section) []:dev
+Common Name (eg, your name or your server's hostname) []:0.0.0.0
+Email Address []:1220041986@qq.com
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+############
+
+openssl x509 -req -days 365 -in ssl.csr -signkey ssl.key -out ssl.crt
+############
+Signature ok
+subject=/C=CN/ST=beijing/L=haidian/O=aisino/OU=dev/CN=0.0.0.0/emailAddress=1220041986@qq.com
+Getting Private key
+############
+
+vi /usr/local/nginx/conf/nginx.conf
+
+    server {
+        listen 80;
+        listen 443 ssl;
+        server_name 0.0.0.0;
+
+        ssl_certificate /usr/local/nginx/key/ssl.crt;
+        ssl_certificate_key /usr/local/nginx/key/ssl.key;
+        #ssl_session_timeout 5m;
+        #ssl_protocols SSLv2 SSLv3 TLSv1;
+        #ssl_ciphers ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP;
+
+        #ssl_prefer_server_ciphers on;
+
+        location / {
+            root html;
+            index index.html index.htm;
+        }
+        location ~* ^/(ag-api) {
+            proxy_pass         http://127.0.0.1:5577;
+            rewrite "^/ag-api/(.*)$" /$1 break;
+            proxy_set_header   X-Real-IP        $remote_addr;
+            proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
+        }
+    }
+
+/usr/local/nginx/sbin/nginx -s reload
+
+```

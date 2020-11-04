@@ -15,3 +15,5 @@ make install
 cd /usr/local/nginx/sbin/
 
 ./nginx -v # 输出版本号即可
+
+mvn install
