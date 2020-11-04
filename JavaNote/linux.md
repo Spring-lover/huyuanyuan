@@ -467,3 +467,21 @@ tar -zcvf ag.tar /opt/ag_tar/
 解压tar.gz格式压缩包
 tar zxvf ag.tar
 ```
+
+### vim基本操作
+
+```shell
+h: 左移一个字符
+j: 下移一行
+k: 上移一行
+l: 右移一行
+gg: 回到缓冲区的第一行
+G: 移到缓冲区的最后一行
+ctrl F: 下翻一页
+ctrl B: 上翻一页
+
+/nginx 从文本开头查找nginx
+?nginx 从文本金结尾查找nginx 
+n 下一个匹配
+N 上一个匹配
+```
