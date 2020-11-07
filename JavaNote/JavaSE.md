@@ -460,3 +460,9 @@ public <T> T[] toArray(T[] a) {
 参数长度小于则直接复制并转换为T类型，大于等于则在数组末尾补null
 
 
+### Integer[] 转化为 int[]
+
+```java
+
+ints = Arrays.stream(integers).mapToInt(Integer::valueOf).toArray();
+```
