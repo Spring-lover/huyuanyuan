@@ -59,8 +59,14 @@ npm install --unsafe-perm=true --allow-root # 使用root用户进行npm install
 4. Postgres
 
 ```shell
+# dump 数据
+pg_dump  ag -O -U postgres -p 7432 > ag.backup.sql
+
+# restore 数据
+psql -U postgres -c "create database ag" && psql -U postgres -d ag -f /hdfs/data2/pgdata/ag.backup.sql
+# 连接pg
 psql -U postgres -p 7432 -d ag
-# 10.106.128.29	上安装了postgres 不知道需不需要安装
+
 ```
 
 5. AG-Server
@@ -120,6 +126,8 @@ nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es
 nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /hdfs/data2/ag_person_1_times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/ImportPerson.json 20201103_cassandra_133&
 # 本地 cassandra person
 nohup ./run.sh import /Users/hujiale/ProgramFiles/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/smalltest /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/utiltest_schema.json /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/ImportPerson.json 20201103_cassandra_localhost &
+
+./run.sh import /Users/hujiale/ProgramFiles/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/smalltest /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/utiltest_schema.json /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201105
 
 # 查看进程
 

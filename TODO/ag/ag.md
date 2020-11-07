@@ -967,3 +967,27 @@ vi /usr/local/nginx/conf/nginx.conf
 /usr/local/nginx/sbin/nginx -s reload
 
 ```
+
+## nginx 高可用的配置
+
+
+## nginx原理 
+
+### master进程和多个worker进程
+
+master进程主要用来管理worker进程，包括：接受外界的信号，向各个worker进程发送信号，监控worker进程的运行状态。当worker进程退出后(异常情况下)，会自动重新启动新的worker进程。而基本的网络事件，则是放在worker进程中来处理了 。多个worker进程之间是对等的，他们同等竞争来自客户端的请求，各进程互相之间是独立的。
+
+### ./nginx -s reload
+
+首先master进程在接到信号后，会先重新加载配置文件，然后再启动新的进程，并向所有老的进程发送信号，告诉他们可以光荣退休了。新的进程在启动后，就开始接收新的请求，而老的进程在收到来自master的信号后，就不再接收新的请求，并且在当前进程中的所有未处理完的请求处理完成后，再退出。这样也是多个worker的好处
+
+### 连接数 work_connection
+
+#### 发送请求，占用了worker的几个连接数？
+
+2个或4个
+
+#### nginx 有一个 master，有四个 woker，每个 woker 支持最大的连接数 1024，支持的 最大并发数是多少?
+
+ - 普通的静态访问最大并发数是worker_connection* worker_processes /2
+ - 而如果是HTTP作反向代理来说，最大并发数量应该是worker_connection* work_processes / 4

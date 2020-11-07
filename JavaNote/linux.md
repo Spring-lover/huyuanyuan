@@ -178,6 +178,9 @@ mkdir  /root/hadoop/dfs/data
 git add . # 添加文件到暂存区
 git commit -m "message" # 添加文件到本地仓库
 git push # 添加文件到远程仓库
+
+git tag # 显示所有的tag
+git checkout tag # 前往tag的版本
 ```
 
 删除本地文件
