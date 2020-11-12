@@ -118,16 +118,6 @@ nohup npm run dev >/dev/null 2>&1 & exit # 让npm在后台中运行
 
 # 5times ag_enhanced_data
 nohup run.sh import /hdfs/data1/ag_enhanced_data/conf/janus023_5_times_base.properties /hdfs/data1/ag_enhanced_data/5times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201027_5time_base
-# 133 cassandra
-nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /hdfs/data2/ag_1_times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201103_cassandra &
-# 133 cassandra smalltest 
-nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /hdfs/data2/ag-data-test /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201103_cassandra_smalltest &
-# 133 cassandra person
-nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /hdfs/data2/ag_person_1_times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/ImportPerson.json 20201103_cassandra_133&
-# 本地 cassandra person
-nohup ./run.sh import /Users/hujiale/ProgramFiles/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/smalltest /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/utiltest_schema.json /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/ImportPerson.json 20201103_cassandra_localhost &
-
-./run.sh import /Users/hujiale/ProgramFiles/janusgraph-0.2.3-hadoop2/conf/janusgraph-cassandra-es.properties /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/smalltest /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/utiltest_schema.json /Users/hujiale/IdeaProjects/aisino_gragh/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201105
 
 # 查看进程
 
@@ -177,3 +167,5 @@ nohup redis-server /usr/local/redis/redis.conf &
 
 ps -ef | grep -v grep | grep redis-server 
 ```
+
+bash /opt/aisino_graph/ag-server/bin/tools/service_restart.sh

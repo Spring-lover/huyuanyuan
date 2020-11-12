@@ -296,6 +296,11 @@ Queue queue = new LinkedList(); // 单向队列
 - **offer()：**将指定的元素插入到此队列中，插入返回true，失败返回false
 - **add()：**将指定的元素插入队列
 
+```java
+// 默认是小顶堆 可以重写构造器变成大顶堆
+Queue<Integer> pq = new PriorityQueue<>((v1, v2) -> v2 - v1);
+```
+
 #### Deque
 
 ```java
@@ -466,3 +471,5 @@ public <T> T[] toArray(T[] a) {
 
 ints = Arrays.stream(integers).mapToInt(Integer::valueOf).toArray();
 ```
+
+
