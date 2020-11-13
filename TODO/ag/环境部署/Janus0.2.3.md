@@ -26,6 +26,7 @@ chown -R hjl:hjl /opt/janusgraph-0.2.3-hadoop2
 
 cd /opt/janusgraph-0.2.3-hadoop2
 nohup ./bin/gremlin-server.sh ./conf/gremlin-server/util_0718.yaml &
+nohup ./bin/gremlin-server.sh ./conf/gremlin-server/index-test.yaml &
 ```
 
 2. 安装maven

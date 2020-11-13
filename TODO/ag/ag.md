@@ -817,7 +817,7 @@ Hbase: 1026_10TIMES
 ```shell
 awk '{print $1","$2}' nsr.csv > td_nsr.csv
 
-\copy td_nsr_test from '/Users/hujiale/PycharmProjects/pythonProject/ag/test/td_nsr.csv' with csv header;
+\copy td_nsr_test from '/Users/hujiale/Desktop/td_importance_4.csv' with csv header;
 ```
 
 
@@ -825,7 +825,9 @@ awk '{print $1","$2}' nsr.csv > td_nsr.csv
 ## Import data 5 times (Janus 0.2.3)
 
 ```shell
-nohup run.sh import /hdfs/data1/ag_enhanced_data/conf/janus023_5_times_base.properties /hdfs/data1/ag_enhanced_data/5times /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json 20201027_5time_base
+nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/index_test.properties /opt/aisino_graph/janusgraph-utils/aisino-data-test/ /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json > hbase_index_test.log 2>&1 &
+
+./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/index_test.properties /opt/aisino_graph/janusgraph-utils/aisino-data-test/ /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /opt/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json > hbase_index_test.log 2>&1
 
 # 修改hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -840,6 +842,7 @@ nohup run.sh import /hdfs/data1/ag_enhanced_data/conf/janus023_5_times_base.prop
 192.168.80.43    datanode43    datanode43.novalocal
 192.168.80.44    datanode44    datanode44.novalocal
 ```
+
 
 ## 11-03
 
@@ -991,3 +994,23 @@ master进程主要用来管理worker进程，包括：接受外界的信号，�
 
  - 普通的静态访问最大并发数是worker_connection* worker_processes /2
  - 而如果是HTTP作反向代理来说，最大并发数量应该是worker_connection* work_processes / 4
+
+### ELK
+
+#### host table
+id ip name host-name desc 
+
+ag-server 
+
+schedule fixed
+
+spark / zookeeper / CDH / janusgraph / Hbase
+
+主机运行状态 cpu / memory
+
+在每个主机上执行 metric-beats 实现监控 cm_curl es_curl 自己的beats
+
+
+所有的运行状态放在elasticsearch中，再通过ag-server去读取所有的状态
+
+
