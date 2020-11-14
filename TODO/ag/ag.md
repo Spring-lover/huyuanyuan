@@ -1000,17 +1000,69 @@ master进程主要用来管理worker进程，包括：接受外界的信号，�
 #### host table
 id ip name host-name desc 
 
-ag-server 
-
+#### 定时脚本1分钟去获取状态
 schedule fixed
 
+#### 需要监听的服务
 spark / zookeeper / CDH / janusgraph / Hbase
 
 主机运行状态 cpu / memory
 
+#### heartbeats
 在每个主机上执行 metric-beats 实现监控 cm_curl es_curl 自己的beats
 
-
 所有的运行状态放在elasticsearch中，再通过ag-server去读取所有的状态
+
+#### cloudera manager
+
+service中的状态
+
+### elasticsearch
+
+
+#### 启动错误
+
+ - [1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65536]
+```shell
+vim /etc/security/limits.conf
+添加如下内容
+* soft nofile 65536
+* hard nofile 1311072
+* soft nproc 2048
+* hard nproc 4096
+```
+ - [2]: max number of threads [1024] for user [elsearch] is too low, increase to at least [4096]
+
+```shell
+vim /etc/security/limits.d/90-nproc.conf
+# 修改如下内容
+* soft nproc 1024
+# 修改为 
+* soft nproc 4096
+```
+- [3]: system call filters failed to install; check the logs and fix your configuration
+or disable system call filters at your own risk
+```shell
+Centos6 不支持SecComp
+vim config/elasticsearch.yml
+bootstrap.system_call_filter: false
+```
+- [4]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+
+```shell
+vim /etc/sysctl.conf
+
+vm.max_map_count=262144
+
+sysctl -p
+
+重启elasticsearch
+```
+
+#### 查看索引情况
+
+```shell
+ curl http://localhost:9200/_cat/indices
+```
 
 
