@@ -1,8 +1,7 @@
 
+# 数据库索引
 
-## 数据库索引
-
-### 索引：
+## 索引
 
 使用索引的全部意义就是通过缩小一张表中需要查询的记录/行的数目来加快搜索的速度
 
@@ -12,7 +11,7 @@
 
 索引存储了指向表中某一行的指针
 
-### 代价：
+### 代价
 
 索引会占用空，表越大，索引占用的空间越大
 
@@ -22,7 +21,7 @@
 
 delimiter命令指定了mysql解释器命令行的结束符，默认为**“;”**
 
-### 索引：
+### Janusgraph index
 
 JanusGraph支持两种不同的Graph Index，Composite index和Mixed Index
 
@@ -87,8 +86,8 @@ root haohan#2016data
 
 2. ```markdown
    1. Header逻辑：
-   	1.1 Header不需要回点
-   	1.2 如何schema和datamapper不一致的问题，以后再考虑
+    1.1 Header不需要回点
+    1.2 如何schema和datamapper不一致的问题，以后再考虑
    ```
 
 3. ```markdown
@@ -475,7 +474,7 @@ TO DO LIST：
 (:) 空命令被认为与shell的内建命令true作用相同
 (?) 双括号结构中 ?就是c语言中的三元操作符
 (()) 	
-	在括号中的命令列表，将会作为一个子shell来运行
+ 在括号中的命令列表，将会作为一个子shell来运行
 	初始化数组 
 ({})
 	文件名扩展 在大括号中，不允许有空白，除非这个空白被引用或转义
@@ -820,8 +819,6 @@ awk '{print $1","$2}' nsr.csv > td_nsr.csv
 \copy td_nsr_test from '/Users/hujiale/Desktop/td_importance_4.csv' with csv header;
 ```
 
-
-
 ## Import data 5 times (Janus 0.2.3)
 
 ```shell
@@ -843,23 +840,10 @@ nohup ./run.sh import /opt/janusgraph-0.2.3-hadoop2/conf/index_test.properties /
 192.168.80.44    datanode44    datanode44.novalocal
 ```
 
-
-## 11-03
-
-1. cassandra导入测试
-2. 文档配置文件部分
-3. 数据导入部分文件路径修改
-
-## cassandra 导入测试
-
-nsr.csv, 3736s, 1/5
-jxx_nsr.csv, 212s, 2/5
-commodity.csv, 2s, 3/5
-invoiceFlow_nsr.csv, 293s, 4/5
-
 ## Nginx
 
-###  基本概念
+### 基本概念
+
 1. 反向代理
   正向代理：在客户端（浏览器）配置代理服务器，通过代理服务器进行互联网访问
   反向代理：我们只需要将请求发送给反向代理服务器，由反向代理服务器去选择目标服务器获取数据后，再返回给客户端，此时反向服务器和目标服务器对外就是一个服务器，暴露的是代理服务器地址，隐藏了真实服务器IP地址
@@ -875,14 +859,17 @@ invoiceFlow_nsr.csv, 293s, 4/5
 
 2. weight
     指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况
+
     ```shell
     upstream server_pool{
       server 192.168.5.31 weight=10;
       server 192.168.5.22 weight=20;
     }
     ```
+
 3. ip_hash
     每个请求按访问ip的hash结果分配，这样每个访客固定底访问一个后端服务器，可以解决session的问题
+
     ```shell
     upstream server_pool{
       ip_hash;
@@ -890,8 +877,10 @@ invoiceFlow_nsr.csv, 293s, 4/5
       server 192.168.5.22:80;
     }
     ```
+
 4. fair
     按后端服务器的响应时间来分配请求，响应时间短的优先分配
+
     ```shell
     upstream server_pool{
       server 192.168.5.21:80;
@@ -899,6 +888,7 @@ invoiceFlow_nsr.csv, 293s, 4/5
       fair;
     }
     ```
+
 ### ag中的nginx.conf
 
 ```shell
@@ -992,37 +982,19 @@ master进程主要用来管理worker进程，包括：接受外界的信号，�
 
 #### nginx 有一个 master，有四个 woker，每个 woker 支持最大的连接数 1024，支持的 最大并发数是多少?
 
- - 普通的静态访问最大并发数是worker_connection* worker_processes /2
- - 而如果是HTTP作反向代理来说，最大并发数量应该是worker_connection* work_processes / 4
+- 普通的静态访问最大并发数是worker_connection* worker_processes /2
+- 而如果是HTTP作反向代理来说，最大并发数量应该是worker_connection* work_processes / 4
 
 ### ELK
 
 #### host table
-id ip name host-name desc 
 
-#### 定时脚本1分钟去获取状态
-schedule fixed
-
-#### 需要监听的服务
-spark / zookeeper / CDH / janusgraph / Hbase
-
-主机运行状态 cpu / memory
-
-#### heartbeats
-在每个主机上执行 metric-beats 实现监控 cm_curl es_curl 自己的beats
-
-所有的运行状态放在elasticsearch中，再通过ag-server去读取所有的状态
-
-#### cloudera manager
-
-service中的状态
-
-### elasticsearch
-
+id ip name host-name desc
 
 #### 启动错误
 
- - [1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65536]
+- [1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65536]
+
 ```shell
 vim /etc/security/limits.conf
 添加如下内容
@@ -1031,22 +1003,26 @@ vim /etc/security/limits.conf
 * soft nproc 2048
 * hard nproc 4096
 ```
- - [2]: max number of threads [1024] for user [elsearch] is too low, increase to at least [4096]
+
+- [2]: max number of threads [1024] for user [elsearch] is too low, increase to at least [4096]
 
 ```shell
 vim /etc/security/limits.d/90-nproc.conf
 # 修改如下内容
 * soft nproc 1024
-# 修改为 
+# 修改为
 * soft nproc 4096
 ```
+
 - [3]: system call filters failed to install; check the logs and fix your configuration
 or disable system call filters at your own risk
+
 ```shell
 Centos6 不支持SecComp
 vim config/elasticsearch.yml
 bootstrap.system_call_filter: false
 ```
+
 - [4]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
 
 ```shell
@@ -1065,4 +1041,52 @@ sysctl -p
  curl http://localhost:9200/_cat/indices
 ```
 
+#### 查看elasticsearch版本
 
+```shell
+  curl -XGET localhost:9200
+```
+
+#### Heartbeat发送http和tcp请求来判断服务状态是否正常
+
+```yml
+# Configure monitors
+heartbeat.monitors:
+- type: http
+  id: hbase
+  name: My Hbase Host
+  urls: ["http://10.106.128.29:7180/api/v12/clusters/Cluster 1/services/hbase"]
+  schedule: '@every 10s'
+  username: 'admin'
+  password: 'admin'
+- type: http
+  id: ZooKeeper
+  name: My ZooKeeper Host
+  urls: ["http://10.106.128.29:7180/api/v12/clusters/Cluster 1/services/zookeeper"]
+  schedule: '@every 10s'
+  username: 'admin'
+  password: 'admin'
+- type: http
+  id: Spark
+  name: My Spark Host
+  urls: ["http://10.106.128.29:7180/api/v12/clusters/Cluster 1/services/spark_on_yarn"]
+  schedule: '@every 10s'
+  username: 'admin'
+  password: 'admin'
+- type: tcp
+  id: gremlin-server
+  name: JanusGraph Service
+  hosts: ["10.106.128.29", "10.106.128.131"]
+  ports: [8186]
+  schedule: '@every 10s'
+- type: tcp
+  id: CDH Service
+  name: CDH Service
+  hosts: ["10.106.128.29"]
+  ports: [7180]
+  schedule: '@every 10s'
+```
+
+#### java for elasticsearch取得相应的状态
+
+[to do]

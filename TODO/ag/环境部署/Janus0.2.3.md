@@ -132,7 +132,13 @@ janusgraph-utils/logs/20201027_5times.log
 
 hbase shell
 
-truncate tablename
+truncate "tablename"
+
+# hbase 删除表
+
+disable "tablename"
+
+drop "tablename"
 
 # 数据传输 (将当前目录下的所有文件传输到指定的目录下)
 scp ./* root@10.106.128.29:/hdfs/data1/ag_enhanced_data
@@ -168,5 +174,3 @@ nohup redis-server /usr/local/redis/redis.conf &
 
 ps -ef | grep -v grep | grep redis-server 
 ```
-
-bash /opt/aisino_graph/ag-server/bin/tools/service_restart.sh
