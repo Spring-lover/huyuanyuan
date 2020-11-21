@@ -53,3 +53,16 @@ HashSet 的底层使用的其实就是HashMap，只不过HashSet是实现了Set�
  - 实际先算哪个，看运算符优先级
  - 自增、自减操作都是直接修改变量的值，不经过操作数栈
  - 最后的赋值之前，临时结果也是存储在操作数栈中
+
+### String StringBuilder StringBuffer
+
+- 可变与不可变 String是final是不可变的，StringBuilder和StringBuffer都是继承于AbstractStringBuilder都是可变的
+- 线程安全 String是不可修改的，StringBuffer对方加了同步锁是线程安全的，StringBuilder没有对方法添加同步锁，所以是非线程安全的
+- 执行效率 String执行效率是最慢的，StringBuffer执行效率差别不大，StringBuilder是执行效率最高的
+
+### HashMap和HashTable的区别
+
+- HashMap几乎可以等价于HashTable，除了HashMap不是线程安全的，HashTable是线程安全
+- HashMap可以接受key为null以及value为null的，而HashTable不行
+- HashMap把HashTable的contains方法去掉了，改成了containsValue和containsKey
+- 
