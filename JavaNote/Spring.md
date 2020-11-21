@@ -733,13 +733,40 @@ public class HelloService {
 } 
 ```
 
+3: Spring-Boot注入配置参数
 
+- 获取application中的值
 
+给类加`@ConfigurationProperties(prefix = "heartbeats")`
 
+```java
+@Component
+@ConfigurationProperties(prefix = "heartbeats")
+public class HeartBeatsConfig {
+    private String index;
 
+    public String getIndexPrefixName() {
+        return index;
+    }
 
+    public void setIndexPrefixName(String indexPrefixName) {
+        this.index = indexPrefixName;
+        Constants.HeartBeatsPrefixName = indexPrefixName;
+    }
+}
+```
 
+可以使用@Autowired进行注入并使用
 
+- 命令行注入(优先级高)
 
+```java
+nohup $JAVA_HOME/bin/java -Dclouderamanager.username="${clouderaManagerUserName}"
 
+通过-D+参数名进行配置
+```
 
+```yml
+clouderamanager:
+  username: "admin"
+```

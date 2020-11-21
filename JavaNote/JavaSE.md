@@ -374,34 +374,6 @@ doSomething(line);
 2. default：通常称为“默认访问权限”或者“包访问权限”。该模式下，只允许在同一个包中进行访问
 3. protected：只能被类本身的方法及其子类访问，即使子类在不同的包中也可以访问
 
-## HashMap jdk 1.7 和 1.8的区别
-
-### 插入方法和时机
-
-jdk1.7：采用头插法，在多线程的情况会容易造成死锁
-
-jdk1.8：采用尾插法
-
-jdk1.7：先判断是否需要扩容，再插入
-
-jdk1.8：先进行插入，插入完成再判断是否需要扩容
-
-### 数据结构不同
-
-jdk1.8：增加红黑树机制，链表是O(n) 红黑树为log(n)但是红黑树的开销比例比较大，
-数组长度大于64，链表>8时会转化为红黑树
-红黑树节点个数<6转为链表
-
-### 扩容的机制不同
-
-1.8中是将hash数值和原数组长度进行与操作，如果最高是0则原位置保持不变，否则将原位置加上原数组的长度
-
-1.7需要对原数组中的元素进行重新hash定位在新数组的位置
-
-### 线程安全性
-应该尽量避免使用线程不安全的HashMap而使用线程安全的ConcurrentHashMap
-
-
 ## Java 时间输出格式
 
 ```java
@@ -466,14 +438,27 @@ public <T> T[] toArray(T[] a) {
     return a;
 }
 ```
+
 参数长度小于则直接复制并转换为T类型，大于等于则在数组末尾补null
 
 
 ### Integer[] 转化为 int[]
 
 ```java
-
 ints = Arrays.stream(integers).mapToInt(Integer::valueOf).toArray();
 ```
 
+### return int[][]
 
+```java
+List<int[]> res = new ArrayList<>();
+
+return res.toArray(new int[res.size()][]);
+```
+
+### StringBuilder 删除方法
+
+```java
+StringBuilder sb = new StringBuilder();
+sb.delete(0, sb.length());
+```
