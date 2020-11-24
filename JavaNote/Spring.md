@@ -192,6 +192,49 @@ ProductService productService;
 - 再进行默认的byName方式进行装配；
 - 如果以上都不成功,则按byType的方式进行装配
 
+与@Autowired的区别:
+- 都可以实现依赖注入，@Autowired是按照type进行注入的，@Resource默认是按照name来注入的
+- 错误实例
+
+```java
+@Resource
+private String bucketName;
+    
+@Resource
+private String styleName;
+```
+
+此时的name值是指定在xml中的值，而不是指定的id的值
+
+```xml
+<bean id="bucketName " class="java.lang.String"> 
+    <constructor-arg value="${oos.bucketName}"/> 
+</bean> 
+<!-- 图片样式名 --> 
+<bean id="styleName " class="java.lang.String"> 
+    <constructor-arg value="${oos.styleName}"/> 
+</bean>
+```
+
+- 正确实例
+
+```java
+@Resource(name="bucket")
+private String bucketName;
+
+@Resource(name="style")
+private String styleName;
+```
+
+```xml
+<bean name="bucket" class="java.lang.String"> 
+    <constructor-arg value="${oos.bucketName}"/> 
+</bean> 
+<bean name="style" class="java.lang.String"> 
+    <constructor-arg value="${oos.styleName}"/> 
+</bean>
+```
+
 ## @Component
 
 相当于配置文件中
