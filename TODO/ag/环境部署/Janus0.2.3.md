@@ -174,3 +174,7 @@ nohup redis-server /usr/local/redis/redis.conf &
 
 ps -ef | grep -v grep | grep redis-server 
 ```
+
+
+curl -L -O https://artifacts.elastic.co/downloads/beats/heartbeat/heartbeat-6.0.1-x86_64.rpm
+sudo rpm -vi heartbeat-6.0.1-x86_64.rpm

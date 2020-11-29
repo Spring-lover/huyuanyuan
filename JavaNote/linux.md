@@ -181,6 +181,9 @@ git push # 添加文件到远程仓库
 
 git tag # 显示所有的tag
 git checkout tag # 前往tag的版本
+git tag v2.0 # 创建新的tag
+git push origin v2.0 # push新的标签
+git tag -d v2.0 # 删除新的标签
 ```
 
 删除本地文件
