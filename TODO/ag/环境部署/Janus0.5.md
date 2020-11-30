@@ -113,34 +113,6 @@ writeBufferHighWaterMark: 65536
 
 ### 启动gremlin-server
 
-#### 指定properties(JanusGraph-0.2.3)文件 -- failure
-
-```properties
-gremlin.graph=org.janusgraph.core.JanusGraphFactory
-storage.backend=hbase
-storage.hostname=datanode40.novalocal,datanode42.novalocal,datanode43.novalocal
-storage.hbase.ext.zookeeper.znode.parent=/hbase
-storage.hbase.ext.hbase.zookeeper.property.clientPort=2181
-# 如果properties中指定table是原本存在的则会出现如下错误
-storage.hbase.table=util_0718
-storage.hbase.region-count=30
-cache.db-cache=true
-cache.db-cache-clean-wait=20
-cache.db-cache-time=180000
-cache.db-cache-size=0.8
-ids.block-size=100000000
-storage.buffer-size=102400
-index.search.backend=elasticsearch
-index.search.hostname=10.106.128.131
-index.search.port=9200
-index.search.index-name=util_0718
-```
-
-```log
-javax.script.ScriptException: groovy.lang.MissingPropertyException: No such property: graph for class: Script1
-Caused by: java.lang.IllegalArgumentException: gremlin-groovy is not an available GremlinScriptEngine
-```
-
 #### 指定properties(JanusGraph-0.3.2)文件 -- success
 
 ```properties
@@ -176,8 +148,7 @@ storage.hbase.ext.zookeeper.znode.parent=/hbase
 storage.hbase.ext.hbase.zookeeper.property.clientPort=2181
 # 设定skip-schema-check为false会重新建立Hbase表
 storage.hbase.skip-schema-check=false
-# 重新建Hbase则能成功启动gremlin-server服务
-storage.hbase.table=janusgraph0.5.2
+storage.hbase.table=util_0718
 storage.hbase.region-count=30
 cache.db-cache=true
 cache.db-cache-clean-wait=20
@@ -192,10 +163,61 @@ index.search.index-name=util_0718
 ```
 
 ```log
-javax.script.ScriptException: groovy.lang.MissingPropertyException: No such property: graph for class: Script1
-Caused by: java.lang.IllegalArgumentException: gremlin-groovy is not an available GremlinScriptEngine
+hbase ERROR
+org.apache.hadoop.hbase.regionserver.NoSuchColumnFamilyException: Column family table does not exist in region hbase:meta,,1.1588230740 in table 'hbase:meta'
+
+groovy ERROR
+No such property: graph for class: Script1 gremlin-groovy is not an available GremlinScriptEngine
 ```
 
-### 导入数据BatchImport(JanusGraph-0.3.2)
+![janusGraph-0.5.2 HBASE ERROR](./images/janusgraph-0.5.2%20ERROR%20hbase.png)
 
-./run.sh import /Users/hujiale/ProgramFiles/janusgraph-0.3.2-hadoop2/conf/janusgraph-cassandra-es.properties /Users/hujiale/IdeaProjects/aisino_graph/janusgraph-utils/aisino-data-test /Users/hujiale/IdeaProjects/aisino_graph/janusgraph-utils/aisino-conf/utiltest_schema.json /Users/hujiale/IdeaProjects/aisino_graph/janusgraph-utils/aisino-conf/utiltest_datamapper.json
+![janusGraph-0.5.2 Script1](./images/janusgraph0.5.2%20ERROR%20Script1.png)
+
+### 更换hbase-client版本依赖启动 --failure
+
+使用JanusGraph-0.2.3 
+**hbase-shaded-client-1.2.6.jar
+hbase-shaded-server-1.2.6.jar**
+
+![hbase-version-error](./images/hbase-jar-version.png)
+
+### 导入数据BatchImport(JanusGraph-0.3.2) -- success
+
+将`pom.xml`中的依赖改成JanusGraph-0.3.2 测试导入 
+
+```xml
+<dependency>
+  <groupId>org.janusgraph</groupId>
+  <artifactId>janusgraph-all</artifactId>
+  <version>0.3.2</version>
+  <exclusions>
+    <exclusion>
+      <artifactId>slf4j-log4j12</artifactId>
+      <groupId>org.slf4j</groupId>
+    </exclusion>
+    <exclusion>
+      <artifactId>log4j</artifactId>
+      <groupId>log4j</groupId>
+    </exclusion>
+  </exclusions>
+</dependency>
+```
+
+### 修改GraphWebSocket返回的数据结构
+
+JanusGraph-0.2.3 **GraphResponse-Message**
+
+![janus0.2.3](./images/janusgraph-0.2.3-dataStructure.png)
+
+JanusGraph-0.2.3 **Object Structure**
+
+![Janus0.2.3](./images/janus0.2.3-object.png)
+
+JanusGraph-0.3.2 **GraphResponse-Message**
+
+![Janus0.3.2](./images/janusgraph0.3.2.png)
+
+JanusGraph-0.3.2 **Object Structure**
+
+![Janus0.3.2](./images/janusgraph-0.3.2%20object%20.png)
