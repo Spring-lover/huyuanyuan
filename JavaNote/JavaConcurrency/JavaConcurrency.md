@@ -50,5 +50,51 @@ public class CountingFactorizer implement Servlet{
 private static Semaphore semaphore = new Semaphore(1)
 ```
 
+**interrupt源码**
 
+```java
+public void interrupt() {
+    if (this != Thread.currentThread()) {
+        checkAccess();
 
+        // thread may be blocked in an I/O operation
+        synchronized (blockerLock) {
+            Interruptible b = blocker;
+            if (b != null) {
+                interrupted = true;
+                interrupt0();  // inform VM of interrupt
+                b.interrupt(this);
+                return;
+            }
+        }
+    }
+    interrupted = true;
+    // inform VM of interrupt
+    interrupt0();
+}
+```
+
+**interrupted源码**
+
+```java
+public static boolean interrupted() {
+    Thread t = currentThread();
+    boolean interrupted = t.interrupted;
+    // We may have been interrupted the moment after we read the field,
+    // so only clear the field if we saw that it was set and will return
+    // true; otherwise we could lose an interrupt.
+    if (interrupted) {
+        t.interrupted = false;
+        clearInterruptEvent();
+    }
+    return interrupted;
+}
+```
+
+**isInterrupted源码**
+
+```java
+public boolean isInterrupted() {
+    return interrupted;
+}
+```

@@ -468,3 +468,24 @@ sb.delete(0, sb.length());
 Exception ：受检查的异常，这种异常是强制我们catch或throw的异常。你遇到这种异常必须进行catch或throw，如果不处理，编译器会报错。比如：IOException。
 
 RuntimeException：运行时异常，这种异常我们不需要处理，完全由虚拟机接管。比如我们常见的NullPointerException，我们在写程序时不会进行catch或throw。
+
+
+### NIO编程
+
+![NIO](./images/Buffer_flip.png)
+
+flip 源码
+
+```java
+public final Buffer flip(){
+    limit = position;
+    position = 0;
+    mark = -1;
+    return this;
+}
+```
+
+### TCP粘包/拆包
+
+![](./images/tcp拆包粘包.png)
+
