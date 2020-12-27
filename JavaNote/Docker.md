@@ -102,7 +102,7 @@ docker exec -it tomcat01 /bin/bash
 # 阿里云镜像的问题，默认是最小的镜像，所有不必要的东西都剔除掉
 ```
 
-## Docker eslasticsearch
+## Docker elasticsearch
 
 ```shell
 docker stats # 查看容器所占用的内存
